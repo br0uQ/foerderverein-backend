@@ -11,22 +11,15 @@ pub struct Person {
 }
 
 #[derive(Deserialize)]
-pub struct GetData {
-        name: String,
-        age: u32,
-        username: String,
-}
-
-#[derive(Deserialize)]
-pub struct mailerState {
+pub struct MailerState {
     pub name: String,
     pub email: String,
     pub message: String,
 }
 
-impl fmt::Debug for mailerState {
+impl fmt::Debug for MailerState {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("mailerState")
+        f.debug_struct("MailerState")
             .field("name", &self.name)
             .field("email", &self.email)
             .field("message", &self.message)
@@ -34,12 +27,9 @@ impl fmt::Debug for mailerState {
     }
 }
 
-impl fmt::Debug for GetData {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("GetData")
-            .field("name", &self.name)
-            .field("age", &self.age)
-            .field("username", &self.username)
-            .finish()
-    }
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone, Eq, Hash, PartialEq)]
+pub struct User {
+    pub id: u64,
+    pub username: String,
 }
+
