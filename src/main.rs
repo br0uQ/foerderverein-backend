@@ -4,6 +4,7 @@ use axum::{
 use std::net::SocketAddr;
 use tower_http::cors::{Any, CorsLayer};
 
+mod mail;
 mod types;
 use types::MailerState;
 use types::Person;
@@ -64,6 +65,12 @@ async fn send_mail(extract::Json(payload): extract::Json<MailerState>) -> impl I
         id: 1337,
         username: payload.name,
     };
+
+    let result = mail::send_mail();
+    match result {
+        Ok(_) => println!("Successfully sent email"),
+        Err(e) => println!("{}", e),
+    }
 
     (StatusCode::OK, Json(user))
 }
