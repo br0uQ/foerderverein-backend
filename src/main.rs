@@ -63,10 +63,16 @@ async fn send_mail(extract::Json(payload): extract::Json<MailerState>) -> impl I
     println!("{:?}", payload);
     let user = User {
         id: 1337,
-        username: payload.name,
+        username: payload.name.clone(),
     };
 
-    let result = mail::send_mail();
+    let mut subject = String::from("Nachricht von: '");
+    subject.push_str(payload.name.as_str());
+    subject.push_str("' <");
+    subject.push_str(payload.email.as_str());
+    subject.push_str(">");
+
+    let result = mail::send_mail(subject, payload.message);
     match result {
         Ok(_) => println!("Successfully sent email"),
         Err(e) => println!("{}", e),
