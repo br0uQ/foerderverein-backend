@@ -74,9 +74,13 @@ async fn send_mail(extract::Json(payload): extract::Json<MailerState>) -> impl I
 
     let result = mail::send_mail(subject, payload.message);
     match result {
-        Ok(_) => println!("Successfully sent email"),
-        Err(e) => println!("{}", e),
+        Ok(_) => {
+            println!("Successfully sent email");
+            return (StatusCode::OK, Json(user));
+        }
+        Err(e) => {
+            println!("{}", e);
+            return (StatusCode::INTERNAL_SERVER_ERROR, Json(user));
+        }
     }
-
-    (StatusCode::OK, Json(user))
 }
